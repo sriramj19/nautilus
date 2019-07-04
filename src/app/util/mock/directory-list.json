@@ -3,12 +3,44 @@
     "id": -1,
     "contents": [
         {
-            "name": "home",
+            "name": "bin",
             "id": 1
         },
         {
-            "name": "etc",
+            "name": "cdrom",
             "id": 2
+        },
+        {
+            "name": "etc",
+            "id": 3
+        },
+        {
+            "name": "lib",
+            "id": 4
+        },
+        {
+            "name": "mnt",
+            "id": 5
+        },
+        {
+            "name": "proc",
+            "id": 6
+        },
+        {
+            "name": "run",
+            "id": 7
+        },
+        {
+            "name": "snap",
+            "id": 8
+        },
+        {
+            "name": "sys",
+            "id": 9
+        },
+        {
+            "name": "var",
+            "id": 10
         }
     ]
 }
