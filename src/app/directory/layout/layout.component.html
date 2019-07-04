@@ -1,33 +1,82 @@
-<button (click)="toggleNewFolderDialog()"> Open Modal</button>
+<div style="padding: 1rem 2rem; background: #504d46; color: #fff; display: flex; align-items: center">
+  <button class="back-button" [disabled]="currentFolder.data.name === RootName" (click)="navigateFolder('bwd')"
+    style="background: #504d46; color: #fff; padding: 0.25rem; border: 1px solid #42413e; border-radius: 5px; cursor: pointer">
+    <img width="12px" [style.visibility]="currentFolder.data.name === RootName ? 'hidden' : ''"
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAIDAAACAwBDO6GDAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHzSURBVHic7d29ahRRHIbx+HEfWqQQq6hNBInmdo2VYCFpvBsbYxKTJQGLxyJjIwueMzDzfznz/GDrfeFhDssyO3twIEmSJC0KeAZ8Ai6BO+AceFO9a5OA4ynEv26Ao+p9mzLFuN4T46/z6o2b0RCD6fh6VL11eI0xAHbVW4fXEQPgrHrv0DpjXALPqzcPCzgFdo0xfuAnrOUYI4gxghgjiDGCGCOIMYIYI4gxghgjiDGCGCPIjBivqjcPyxhBjBHEGEE6Y1wYY0HGCGKMIMYIYowgxghijCDGCGKMIMYIYowgM2K8rt48LGMEMUYQYwQxRhBjBDFGEOAlcNUY4xfwrnrz0ICzxhg3xlgB8N1j6v8er/herT+8Z9EVegB8bDyy/J5qDcAh+x/u4tFVBTji4ca1FlfAcfXm4XVGuTbKCowSyCiBjBLIKIGMEsgogWZEeVu9eXidUW6Bk+rNwzNKIPqei/gTn0C9vBlXyvvqzcMzSiCjBDJKIKMEMkogowSaEeVD9ebhGSWQUQIZJZBRAhklkFECGSWQUQIZJZBRAs2Iclq9eXidUXZGWYFRAhklEP1/vXpYvXl4nVE+V+/dhI7j6x54Ur13ExqvlN/A0+qtm9EQ5Vv1xs2Zoux7OM493jdcA3gBfAHuptdXY0iSJI3gD6uoWhxeGVc0AAAAAElFTkSuQmCC">
+  </button>
+  <button
+    style="background: #2f2d29; color: #fff; padding: 0.4rem; border: 1px solid #42413e; border-radius: 5px; margin-left: 0.25rem; min-width: 2rem">
+    {{currentFolder.data.name}}
+  </button>
+  <button (click)="toggleNewFolderDialog()"
+    style="background: #2f2d29; color: #fff; padding: 0.4rem; border: 1px solid #42413e; border-radius: 5px; margin-left: auto; min-width: 2rem; display: flex; align-items: center; cursor: pointer">
+    <div class="icons8-add-folder-filled" style="margin-right: 0.5rem;"></div>
+    New Folder
+  </button>
+</div>
 
-<p *ngIf="currentFolder.data.id !== RootId" (click)="navigateFolder('bwd')">
-  back
-</p>
-
-<ng-container *ngFor="let folder of currentFolder.data.contents">
-  <div (click)="navigateFolder('fwd', folder)">
-    {{folder.name}}
-  </div>
+<ng-container *ngIf="currentFolder?.data?.contents?.length; else emptyDirectoryTemplate">
+  <ng-container *ngFor="let folder of currentFolder.data.contents">
+    <div style="cursor: pointer; align-items: center; display: flex" class="folder"
+      (click)="navigateFolder('fwd', folder)">
+      <div class="icons8-folder"></div>
+      <span style="margin-left: 0.5rem">
+        {{folder.name}}
+      </span>
+    </div>
+  </ng-container>
 </ng-container>
 
-{{
-  currentFolder | json
-}}
+<ng-template #emptyDirectoryTemplate>
+  <div style="display: flex; height: 80vh;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="150" height="150" viewBox="0 0 172 172"
+        style=" fill:#000000;">
+        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+          stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+          font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+          <path d="M0,172v-172h172v172z" fill="none"></path>
+          <g fill="#cccccc">
+            <path
+              d="M17.2,13.76c-5.68976,0 -10.32,4.63024 -10.32,10.32v20.64h3.44h151.36h3.44v-6.88c0,-5.68976 -4.63024,-10.32 -10.32,-10.32l-92.72547,0.02016c-0.95976,-0.34744 -2.9447,-3.50767 -4.0111,-5.20703c-2.63848,-4.21056 -5.37296,-8.57312 -9.90344,-8.57312zM10.32,51.6c-1.89888,0 -3.44,1.54112 -3.44,3.44v92.88c0,5.70008 4.61992,10.32 10.32,10.32h137.6c5.70008,0 10.32,-4.61992 10.32,-10.32v-92.88c0,-1.89888 -1.54112,-3.44 -3.44,-3.44z">
+            </path>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div style="color: #cccccc; font-weight: 700; font-size: 21px">
+      Folder is empty
+    </div>
 
-<div id="myModal" class="overlay" [style.display]="folderAdditionInProgress ? 'block' : 'none'">
+  </div>
+</ng-template>
+
+
+<div id="myModal" class="overlay modal" [style.display]="folderAdditionInProgress ? 'block' : 'none'">
 
   <!-- Modal content -->
   <div class="modal-content">
-    <div class="modal-header" id="container">
-      <span id="left" (click)="toggleNewFolderDialog()">Cancel</span>
-      <span id="right" (click)="addFolder(newFolderName.value)">Create</span>
+    <div class="modal-header">
+      <span
+        style="background: #2f2d29; color: #fff; padding: 0.25rem; border: 1px solid #42413e; border-radius: 5px; min-width: 2rem; display: flex; align-items: center; cursor: pointer"
+        id="left" (click)="toggleNewFolderDialog()">Cancel</span>
+      <button id="right"
+        style="background-color: #65ac45; color: #fff; padding: 0.25rem; border: 1px solid #42413e; border-radius: 5px; min-width: 2rem; display: flex; align-items: center; cursor: pointer"
+        (click)="addFolder(newFolderNameInput.value)">Create</button>
       <h4 id="center">New Folder</h4>
     </div>
     <div class="modal-body">
-      <div>
+      <div style="margin-bottom: 0.75rem">
         Folder name
       </div>
-      <input type="text" #newFolderName autofocus (keyup.enter)="addFolder(newFolderName.value)">
+      <input style="width: 100%; border-radius: 5px; padding: 0.25rem" type="text" [(ngModel)]="newFolderNameValue"
+        #newFolderNameInput autofocus (keyup.enter)="addFolder(newFolderNameInput.value)">
+      <div style="margin-top: 0.75rem" *ngIf="checkIfAlreadyExists(newFolderNameValue)">
+        Folder name already exists
+      </div>
     </div>
   </div>
 

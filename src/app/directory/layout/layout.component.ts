@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Folder, FolderNode } from '../folder/folder';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Folder, FolderNode } from './folder';
 import { Stack } from 'src/app/util/data-structures/stack';
 import { UtilService } from 'src/app/util/services/util.service';
 import { LayoutService } from './layout.service';
@@ -13,11 +13,13 @@ import { RootName } from './layout.data';
 })
 export class LayoutComponent implements OnInit {
 
-  readonly RootId = RootName;
+  readonly RootName = RootName;
   public masterDirectory: Folder;
   public currentFolder: FolderNode;
   private folderStack: Stack<FolderNode>;
   public folderAdditionInProgress: boolean = false;
+  public newFolderNameValue: string;
+  @ViewChild('newFolderNameInput') private newFolderNameInput: ElementRef;
 
   constructor(private utilServ: UtilService, private layoutServ: LayoutService) { }
 
@@ -123,10 +125,6 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  private fetchRootFolder(masterDirectoryList: Folder[]): Folder {
-    return masterDirectoryList.find(directory => directory.name === RootName);
-  }
-
   /**
    * @description form the previous folder data from the top of the stack
    */
@@ -170,7 +168,7 @@ export class LayoutComponent implements OnInit {
   }
 
   public addFolder(folderName: string) {
-    if (folderName && folderName.trim()) {
+    if (folderName && folderName.trim() && !this.checkIfAlreadyExists(folderName)) {
       folderName = folderName.trim();
       if (this.currentFolder) {
         if (!this.currentFolder.data.contents) {
@@ -182,8 +180,27 @@ export class LayoutComponent implements OnInit {
     }
   }
 
+  private focusOnNewFolderInput() {
+    setTimeout(() => {
+      if (this.newFolderNameInput && this.newFolderNameInput.nativeElement) {
+        this.newFolderNameInput.nativeElement.focus();
+      }
+    }, 100);
+  }
+
   public toggleNewFolderDialog() {
+    this.focusOnNewFolderInput();
     this.folderAdditionInProgress = !this.folderAdditionInProgress;
+    this.newFolderNameValue = "";
+  }
+
+  public checkIfAlreadyExists(folderName: string): boolean {
+    if (folderName && this.currentFolder.data.contents) {
+      if (this.currentFolder.data.contents.map(data => data.name.toLowerCase()).includes(folderName.trim().toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
