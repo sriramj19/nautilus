@@ -26,7 +26,7 @@ export class LayoutComponent implements OnInit {
     if (this.folderAdditionInProgress) {
       if (kevent.keyCode == 27) {
         kevent.preventDefault();
-        this.toggleNewFolderDialog();
+        this.toggleNewFolderDialog(); // Closing dialog on esc
       }
     }
   }
@@ -35,6 +35,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     this.initiateDefaults();
+    this.fetchMasterDirectory();
   }
 
   /**
@@ -44,25 +45,28 @@ export class LayoutComponent implements OnInit {
     try {
       this.currentFolder = null;
       this.folderStack = new Stack<FolderNode>();
-      this.fetchMasterDirectory();
+      this.masterDirectory = null;
+      this.folderAdditionInProgress = false;
+      this.newFolderNameValue = "";
     } catch (error) {
       this.utilServ.raiseException('initiating the default values', error);
     }
   }
 
+  /**
+   * @description fetch the master directory
+   */
   private fetchMasterDirectory() {
     this.layoutServ.getInitialDirectory().subscribe(data => {
       this.masterDirectory = data;
-      console.log('inside', data);
       this.initializeLayout();
     })
   }
 
+  /**
+   * @description initialize the layout
+   */
   private initializeLayout() {
-    this.initiateDefaultFolderView();
-  }
-
-  private initiateDefaultFolderView() {
     this.navigateFolder('init');
   }
 
@@ -177,19 +181,30 @@ export class LayoutComponent implements OnInit {
     }
   }
 
+  /**
+   * @description add a new folder
+   * @param folderName the name of the new folder
+   */
   public addFolder(folderName: string) {
-    if (folderName && folderName.trim() && !this.checkIfAlreadyExists(folderName)) {
-      folderName = folderName.trim();
-      if (this.currentFolder) {
-        if (!this.currentFolder.data.contents) {
-          this.currentFolder.data.contents = [];
+    try {
+      if (folderName && folderName.trim() && !this.checkIfFolderAlreadyExists(folderName)) {
+        folderName = folderName.trim();
+        if (this.currentFolder) {
+          if (!this.currentFolder.data.contents) {
+            this.currentFolder.data.contents = [];
+          }
+          this.currentFolder.data.contents.push({ name: folderName });
+          this.toggleNewFolderDialog();
         }
-        this.currentFolder.data.contents.push({ name: folderName });
-        this.toggleNewFolderDialog();
       }
+    } catch (error) {
+      this.utilServ.raiseException('adding folder', error);
     }
   }
 
+  /**
+   * @description focus on the new folder input
+   */
   private focusOnNewFolderInput() {
     setTimeout(() => {
       if (this.newFolderNameInput && this.newFolderNameInput.nativeElement) {
@@ -198,19 +213,30 @@ export class LayoutComponent implements OnInit {
     }, 100);
   }
 
+  /**
+   * @description toggle the new folder dialog
+   */
   public toggleNewFolderDialog() {
     this.focusOnNewFolderInput();
     this.folderAdditionInProgress = !this.folderAdditionInProgress;
     this.newFolderNameValue = "";
   }
 
-  public checkIfAlreadyExists(folderName: string): boolean {
-    if (folderName && this.currentFolder.data.contents) {
-      if (this.currentFolder.data.contents.map(data => data.name.toLowerCase()).includes(folderName.trim().toLowerCase())) {
-        return true;
+  /**
+   * @description check if a folder name already exists in the current folder
+   * @param folderName the folder name to check in current folder
+   */
+  public checkIfFolderAlreadyExists(folderName: string): boolean {
+    try {
+      if (folderName && this.currentFolder.data.contents) {
+        if (this.currentFolder.data.contents.map(data => data.name.toLowerCase()).includes(folderName.trim().toLowerCase())) {
+          return true;
+        }
       }
+      return false;
+    } catch (error) {
+      this.utilServ.raiseException('checking if folder already exists', error);
     }
-    return false;
   }
 
 }

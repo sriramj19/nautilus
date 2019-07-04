@@ -1,3 +1,16 @@
+$primary-color: #504d46;
+$secondary-color: #2f2d29;
+$border-color: #42413e;
+$success-color: #65ac45;
+
+.toolbar {
+  padding: 1rem 2rem;
+  background: $primary-color;
+  color: #fff;
+  position: sticky;
+  top: 0;
+}
+
 /* The Modal (background) */
 .overlay {
   display: none; /* Hidden by default */
@@ -20,35 +33,20 @@
   background-color: #fefefe;
   margin: auto;
   padding: 0;
-  border: 1px solid #504d46;
+  border: 1px solid $primary-color;
   width: 25%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  animation-name: animatetop;
+  animation-name: modalanimation;
   animation-duration: 0.1s;
 }
 
-@keyframes animatetop {
+@keyframes modalanimation {
   from {
-    transform: scale(0)
+    transform: scale(0);
   }
   to {
-    transform: scale(1)
+    transform: scale(1);
   }
-}
-
-/* The Close Button */
-.close {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .modal-header {
@@ -56,23 +54,49 @@
   border-top-left-radius: 7px;
   padding: 8px 16px;
   padding-bottom: 0.5rem;
-  background-color: #504d46;
+  background-color: $primary-color;
   color: white;
   min-height: 1.5rem;
+}
+
+.new-folder-input {
+  width: 95%;
+  border-radius: 5px;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
 }
 
 .modal-body {
   padding: 1rem;
 }
-#left {
+
+.pull-left {
   float: left;
-  //   width: 100px;
 }
-#right {
+
+.pull-right {
   float: right;
-  //   width: 100px;
 }
-#center {
+
+.modal-title {
   margin: 0 auto;
   width: 100px;
 }
@@ -86,15 +110,75 @@
   color: #fff;
 }
 
+.align-center {
+  align-items: center;
+  display: flex;
+}
 
+.back-button {
+  background: $primary-color;
+  color: #fff;
+  padding: 0.25rem;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+}
 
 .back-button:hover {
-    background: #2f2d29 !important;
+  background: $secondary-color !important;
 }
 
 .back-button:disabled {
-  color: #504d46 !important;
-  background: #504d46 !important;
+  color: $primary-color !important;
+  background: $primary-color !important;
+}
+
+.pwd-button {
+  background: $secondary-color;
+  color: #fff;
+  padding: 0.4rem;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  margin-left: 0.25rem;
+  min-width: 2rem;
+}
+
+.modal-button {
+  color: #fff;
+  padding: 0.25rem;
+  border-radius: 5px;
+  min-width: 2rem;
+  &.cancel {
+    background: $secondary-color;
+    border: 1px solid $border-color;
+  }
+  &.add {
+    background-color: $success-color;
+    border: 1px solid $success-color;
+  }
+}
+
+.new-folder-button {
+  background: $secondary-color;
+  color: #fff;
+  padding: 0.4rem;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  margin-left: auto;
+  min-width: 2rem;
+}
+
+.empty-folder {
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.empty-folder-content {
+  color: #cccccc;
+  font-weight: 700;
+  font-size: 21px;
 }
 
 .icons8-folder {
