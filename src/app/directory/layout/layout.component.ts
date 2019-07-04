@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Folder, FolderNode } from './folder';
 import { Stack } from 'src/app/util/data-structures/stack';
 import { UtilService } from 'src/app/util/services/util.service';
@@ -20,6 +20,16 @@ export class LayoutComponent implements OnInit {
   public folderAdditionInProgress: boolean = false;
   public newFolderNameValue: string;
   @ViewChild('newFolderNameInput') private newFolderNameInput: ElementRef;
+
+  @HostListener('keydown', ['$event'])
+  handleKeyDownEvent(kevent: KeyboardEvent) {
+    if (this.folderAdditionInProgress) {
+      if (kevent.keyCode == 27) {
+        kevent.preventDefault();
+        this.toggleNewFolderDialog();
+      }
+    }
+  }
 
   constructor(private utilServ: UtilService, private layoutServ: LayoutService) { }
 
