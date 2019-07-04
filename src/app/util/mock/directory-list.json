@@ -1,0 +1,14 @@
+{
+    "name": "/",
+    "id": -1,
+    "contents": [
+        {
+            "name": "home",
+            "id": 1
+        },
+        {
+            "name": "etc",
+            "id": 2
+        }
+    ]
+}

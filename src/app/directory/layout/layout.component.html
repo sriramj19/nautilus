@@ -1,0 +1,34 @@
+<button (click)="toggleNewFolderDialog()"> Open Modal</button>
+
+<p *ngIf="currentFolder.data.id !== RootId" (click)="navigateFolder('bwd')">
+  back
+</p>
+
+<ng-container *ngFor="let folder of currentFolder.data.contents">
+  <div (click)="navigateFolder('fwd', folder)">
+    {{folder.name}}
+  </div>
+</ng-container>
+
+{{
+  currentFolder | json
+}}
+
+<div id="myModal" class="overlay" [style.display]="folderAdditionInProgress ? 'block' : 'none'">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header" id="container">
+      <span id="left" (click)="toggleNewFolderDialog()">Cancel</span>
+      <span id="right" (click)="addFolder(newFolderName.value)">Create</span>
+      <h4 id="center">New Folder</h4>
+    </div>
+    <div class="modal-body">
+      <div>
+        Folder name
+      </div>
+      <input type="text" #newFolderName autofocus (keyup.enter)="addFolder(newFolderName.value)">
+    </div>
+  </div>
+
+</div>

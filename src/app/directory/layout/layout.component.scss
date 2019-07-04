@@ -1,0 +1,77 @@
+/* The Modal (background) */
+.overlay {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 200px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.1); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #504d46;
+    width: 25%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animatetop;
+  animation-duration: 0.1s;
+}
+
+@keyframes animatetop {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    padding: 4px 16px;
+    background-color: #504d46;
+    color: white;
+}
+
+.modal-body {
+    padding: 1rem;
+}
+#left {
+    float: left;
+    //   width: 100px;
+}
+#right {
+    float: right;
+    //   width: 100px;
+}
+#center {
+  margin: 0 auto;
+  width: 100px;
+}
