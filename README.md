@@ -4,5 +4,5 @@ This is a simple(and basic) nautilus replica in Angular. Feel free to navigate t
 
 ## Development server
 
-Run `yarn start` or `npm run start` for a dev server. Navigate to `http://localhost:3003/`. The app will automatically reload if you change any of the source files.
+Run `yarn devStart` or `npm run devStart` for a dev server. Navigate to `http://localhost:3003/`. The app will automatically reload if you change any of the source files.
 
