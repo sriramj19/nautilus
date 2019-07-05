@@ -29,6 +29,14 @@ export class LayoutComponent implements OnInit {
         kevent.preventDefault();
         this.toggleNewFolderDialog(); // Closing dialog on esc
       }
+    } else {
+      if (kevent.ctrlKey && kevent.keyCode == 32) {
+        kevent.preventDefault();
+        this.toggleNewFolderDialog();
+      } else if (kevent.keyCode == 8 || (kevent.altKey && kevent.keyCode == 37)) {
+        kevent.preventDefault();
+        this.navigateFolder('bwd');
+      }
     }
   }
 
