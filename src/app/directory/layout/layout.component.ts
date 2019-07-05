@@ -22,7 +22,7 @@ export class LayoutComponent implements OnInit {
   public breadCrumbs: Folder[];
   @ViewChild('newFolderNameInput') private newFolderNameInput: ElementRef;
 
-  @HostListener('keydown', ['$event'])
+  @HostListener('window:keydown', ['$event'])
   handleKeyDownEvent(kevent: KeyboardEvent) {
     if (this.folderAdditionInProgress) {
       if (kevent.keyCode == 27) {
@@ -77,7 +77,7 @@ export class LayoutComponent implements OnInit {
    * @param direction the folder in which the menu is intended to move
    * @param menu the folder to navigate to
    */
-  public navigateFolder(direction: 'init' | 'fwd' | 'bwd', folder?: Folder) {
+  public navigateFolder(direction: 'init' | 'fwd' | 'bwd' | 'jmp', folder?: Folder) {
     try {
       switch (direction) {
         case 'bwd':
@@ -89,6 +89,9 @@ export class LayoutComponent implements OnInit {
         case 'fwd':
           this.pushOntoStack(folder);
           break;
+        case 'jmp':
+          this.navigateInStack(folder);
+          break;
         default:
           break;
       }
@@ -97,6 +100,17 @@ export class LayoutComponent implements OnInit {
       this.utilServ.scrollToTopOfWindow();
     } catch (error) {
       this.utilServ.raiseException('navigating folder ' + direction, error);
+    }
+  }
+
+  /**
+   * @description navigate to a a particular folder in stack
+   * @param folder the folder to navigate to
+   */
+  private navigateInStack(folder: Folder) {
+    if (this.currentFolder.data.id !== folder.id) {
+      this.navigateFolder('bwd');
+      this.navigateFolder('jmp', folder)
     }
   }
 

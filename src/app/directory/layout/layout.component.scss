@@ -143,11 +143,26 @@ $success-color: #65ac45;
   background: $primary-color !important;
 }
 
-.pwd-button {
+.cta-button {
+  background: #413f3a;
+  border: 1px solid #575450;
+}
+
+.cta-button:hover {
   background: $secondary-color;
+  border: 1px solid $border-color;
+}
+
+.navigation-button {
+  &.pwd {
+    background: $secondary-color;
+    border: 1px solid $border-color;
+  }
+  &.bread-crumb {
+    @extend.cta-button;
+  }
   color: #fff;
   padding: 0.4rem;
-  border: 1px solid $border-color;
   border-radius: 5px;
   margin-left: 0.25rem;
   min-width: 2rem;
@@ -159,20 +174,22 @@ $success-color: #65ac45;
   border-radius: 5px;
   min-width: 2rem;
   &.cancel {
-    background: $secondary-color;
-    border: 1px solid $border-color;
+    @extend.cta-button;
   }
   &.add {
     background-color: $success-color;
     border: 1px solid $success-color;
   }
+  &.add:hover {
+    background-color: darken($color: $success-color, $amount: 2%);
+    border: 1px solid darken($color: $success-color, $amount: 2%);
+  }
 }
 
 .new-folder-button {
-  background: $secondary-color;
+  @extend.cta-button;
   color: #fff;
   padding: 0.4rem;
-  border: 1px solid $border-color;
   border-radius: 5px;
   margin-left: auto;
   min-width: 2rem;
