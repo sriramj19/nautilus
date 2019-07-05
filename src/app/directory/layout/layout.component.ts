@@ -3,7 +3,7 @@ import { Folder, FolderNode } from './folder';
 import { Stack } from 'src/app/util/data-structures/stack';
 import { UtilService } from 'src/app/util/services/util.service';
 import { LayoutService } from './layout.service';
-import { RootName } from './layout.data';
+import { RootId } from './layout.data';
 
 @Component({
   selector: 'app-layout',
@@ -13,12 +13,13 @@ import { RootName } from './layout.data';
 })
 export class LayoutComponent implements OnInit {
 
-  readonly RootName = RootName;
+  readonly RootId = RootId;
   public masterDirectory: Folder;
   public currentFolder: FolderNode;
   private folderStack: Stack<FolderNode>;
   public folderAdditionInProgress: boolean = false;
   public newFolderNameValue: string;
+  public breadCrumbs: Folder[];
   @ViewChild('newFolderNameInput') private newFolderNameInput: ElementRef;
 
   @HostListener('keydown', ['$event'])
@@ -48,6 +49,7 @@ export class LayoutComponent implements OnInit {
       this.masterDirectory = null;
       this.folderAdditionInProgress = false;
       this.newFolderNameValue = "";
+      this.breadCrumbs = [];
     } catch (error) {
       this.utilServ.raiseException('initiating the default values', error);
     }
@@ -91,6 +93,7 @@ export class LayoutComponent implements OnInit {
           break;
       }
       this.updateCurrentFolder();
+      this.updateBreadCrumbs();
       this.utilServ.scrollToTopOfWindow();
     } catch (error) {
       this.utilServ.raiseException('navigating folder ' + direction, error);
@@ -105,6 +108,17 @@ export class LayoutComponent implements OnInit {
       this.currentFolder = this.folderStack.peek();
     } catch (error) {
       this.utilServ.raiseException('setting current folder', error);
+    }
+  }
+
+  /**
+   * @description update the bread crumbs
+   */
+  private updateBreadCrumbs() {
+    try {
+      this.breadCrumbs = this.folderStack.getStack();
+    } catch (error) {
+      this.utilServ.raiseException('updating breadcrumbs', error);
     }
   }
 
@@ -193,7 +207,7 @@ export class LayoutComponent implements OnInit {
           if (!this.currentFolder.data.contents) {
             this.currentFolder.data.contents = [];
           }
-          this.currentFolder.data.contents.push({ name: folderName });
+          this.currentFolder.data.contents.push({ name: folderName, id: this.fetchMaxIdFromFolder(this.masterDirectory) + 1 });
           this.toggleNewFolderDialog();
         }
       }
@@ -236,6 +250,34 @@ export class LayoutComponent implements OnInit {
       return false;
     } catch (error) {
       this.utilServ.raiseException('checking if folder already exists', error);
+    }
+  }
+
+  /**
+   * @description fetch the maximum id from a folder list
+   * @param folderList the folder list to probe for max id
+   */
+  private fetchMaxIdFromFolderList(folderList: Folder[]) {
+    let _maxId: number = -99;
+    if (folderList && folderList.length) {
+      folderList.forEach(folder => {
+        _maxId = Math.max(_maxId, this.fetchMaxIdFromFolder(folder));
+      });
+    }
+    return _maxId;
+  }
+
+  /**
+   * @description fetch maximum id from a given a folder
+   * @param folder the folder to probe for max id
+   */
+  private fetchMaxIdFromFolder(folder: Folder) {
+    if (folder) {
+      if (folder.contents && folder.contents.length) {
+        return Math.max(folder.id, this.fetchMaxIdFromFolderList(folder.contents));
+      } else {
+        return folder.id;
+      }
     }
   }
 

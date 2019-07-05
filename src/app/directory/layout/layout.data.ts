@@ -1,1 +1,1 @@
-export const RootName: string = "/";
+export const RootId: number = -1;

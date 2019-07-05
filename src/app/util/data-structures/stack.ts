@@ -53,4 +53,14 @@ export class Stack<T> {
     printStack() {
         return this.items.slice(0).reverse();
     }
+
+    /**
+     * @description get the stack elements
+     */
+    getStack() {
+        return this.items.slice(0).reduce((acc, item) => {
+            acc.push({ id: item.data.id, name: item.data.name });
+            return acc;
+        }, []);
+    }
 } 

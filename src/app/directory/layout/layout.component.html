@@ -1,13 +1,17 @@
 <!-- Toolbar template starts -->
 <div class="toolbar align-center">
-  <button class="back-button clickable" [disabled]="currentFolder.data.name === RootName"
-    (click)="navigateFolder('bwd')">
-    <img width="12px" [style.visibility]="currentFolder.data.name === RootName ? 'hidden' : ''"
+  <button class="back-button clickable" [disabled]="currentFolder.data.id === RootId" (click)="navigateFolder('bwd')">
+    <img width="12px" [style.visibility]="currentFolder.data.id === RootId ? 'hidden' : ''"
       src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAIDAAACAwBDO6GDAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHzSURBVHic7d29ahRRHIbx+HEfWqQQq6hNBInmdo2VYCFpvBsbYxKTJQGLxyJjIwueMzDzfznz/GDrfeFhDssyO3twIEmSJC0KeAZ8Ai6BO+AceFO9a5OA4ynEv26Ao+p9mzLFuN4T46/z6o2b0RCD6fh6VL11eI0xAHbVW4fXEQPgrHrv0DpjXALPqzcPCzgFdo0xfuAnrOUYI4gxghgjiDGCGCOIMYIYI4gxghgjiDGCGCPIjBivqjcPyxhBjBHEGEE6Y1wYY0HGCGKMIMYIYowgxghijCDGCGKMIMYIYowgM2K8rt48LGMEMUYQYwQxRhBjBDFGEOAlcNUY4xfwrnrz0ICzxhg3xlgB8N1j6v8er/herT+8Z9EVegB8bDyy/J5qDcAh+x/u4tFVBTji4ca1FlfAcfXm4XVGuTbKCowSyCiBjBLIKIGMEsgogWZEeVu9eXidUW6Bk+rNwzNKIPqei/gTn0C9vBlXyvvqzcMzSiCjBDJKIKMEMkogowSaEeVD9ebhGSWQUQIZJZBRAhklkFECGSWQUQIZJZBRAs2Iclq9eXidUXZGWYFRAhklEP1/vXpYvXl4nVE+V+/dhI7j6x54Ur13ExqvlN/A0+qtm9EQ5Vv1xs2Zoux7OM493jdcA3gBfAHuptdXY0iSJI3gD6uoWhxeGVc0AAAAAElFTkSuQmCC">
   </button>
-  <button class="pwd-button">
-    {{currentFolder.data.name}}
-  </button>
+
+  <ng-container *ngFor="let breadCrumb of breadCrumbs">
+    <button class="pwd-button">
+      {{breadCrumb.name}}
+    </button>
+  </ng-container>
+
+
   <button (click)="toggleNewFolderDialog()" class="align-center clickable new-folder-button">
     <div class="icons8-add-folder-filled mr-2"></div>
     New Folder
